@@ -18,12 +18,12 @@ class Eyes {
 			.append('g')
 				.attr('transform', 'translate('+this.width/2+', '+this.height/2+')');
 
-		this.showNomalEye();
-		this.showEyeLight();
+		this.showEyeBase();
 		this.showLidTired();
 	}
 
-	showNomalEye() {
+
+	showEyeBase() {
 		var canvas = this.canvas;
 		// base
 		canvas
@@ -31,15 +31,11 @@ class Eyes {
 				.attr('r', this.width/2)
 				.attr('class', 'base');
 
-		// black
-		canvas
-			.append('circle')
-				.attr({
-					r: 150,
-					cx: 0,
-					cy: 30,
-					class: 'black'
-				});
+	}
+
+	showNomalEye() {
+		var canvas = this.canvas;
+
 	}
 
 	showEyeLight() {
@@ -102,6 +98,17 @@ class Eyes {
 	showLidTired() {
 		var that = this;
 		var canvas = this.canvas;
+
+		// black
+		canvas.append('circle')
+				.attr({
+					r: 150,
+					cx: 0,
+					cy: 30,
+					class: 'black'
+				});
+		this.showEyeLight();
+
 		var t1 = -Math.PI*1.3, t2 = -Math.PI/2;
 		var ds = this._getDstrings(t1, t2);
 		var d1 = ds[0], d2 = ds[1], delta1 = ds[2], delta2 = ds[3];
