@@ -25,6 +25,9 @@ class Eyes {
 		this.canvas.on('click', () => {
 			that.showNomalEye();
 		});
+		d3.select('html').on('click', () => {
+			that.showWink();
+		});
 		this.detectDeviceMotion();
 	}
 
@@ -50,6 +53,124 @@ class Eyes {
 				canvas.html('');
 				successCallback();
 			})
+	}
+
+	showWink() {
+		var that = this;
+		var canvas = that.canvas;
+		this.resetEye(() => {
+			canvas.attr('opacity', 1);
+			that.showEyeBase();
+
+			// black
+			canvas.append('circle')
+					.attr({
+						r: 160,
+						cx: 0,
+						cy: 0,
+						class: 'black'
+					});
+
+			// lid
+			var theta1 = Math.PI / 8;
+			var theta2 = -theta1;
+			var r = that.r;
+			var x1, y1, x2, y2;
+			x1 = r * Math.sin(theta1);
+			y1 = r * Math.cos(theta1);
+			x2 = r * Math.sin(theta2);
+			y2 = r * Math.cos(theta2);
+
+			var d1 = 'M'+x2+','+y2+' A'+r+','+r+' 0 0,0 '+x1+','+y1;
+
+			theta1 = Math.PI / 8 * 7;
+			theta2 = -theta1;
+			x1 = r * Math.sin(theta1);
+			y1 = r * Math.cos(theta1);
+			x2 = r * Math.sin(theta2);
+			y2 = r * Math.cos(theta2);
+			var d2 = 'M'+x2+','+y2+' A'+r+','+r+' 0 0,1 '+x1+','+y1;
+
+			canvas.append('path')
+				.attr('d', d1)
+				.attr('class', 'wink1')
+				.attr('fill', '#dddddd');
+
+			canvas.append('path')
+				.attr('d', d2)
+				.attr('class', 'wink2')
+				.attr('fill', '#dddddd');
+			// wink
+			close1();
+			function close1() {
+				var x1_close, y1_close, x2_close, y2_close, x12_close, y12_close, x22_close, y22_close;
+				var theta1_close =  Math.PI / 8 * 3;
+				var theta2_close = -theta1_close;
+				x1_close = r * Math.sin(theta1_close);
+				y1_close = r * Math.cos(theta1_close);
+				x2_close = r * Math.sin(theta2_close);
+				y2_close = r * Math.cos(theta2_close);
+				var d1_close = 'M'+x2_close+','+y2_close+' A'+r+','+r+' 0 0,0 '+x1_close+','+y1_close+'z';
+
+				var theta12_close =  Math.PI / 8 * 3.8;
+				var theta22_close = -theta12_close;
+				x12_close = r * Math.sin(theta12_close);
+				y12_close = r * Math.cos(theta12_close);
+				x22_close = r * Math.sin(theta22_close);
+				y22_close = r * Math.cos(theta22_close);
+				var d12_close = 'M'+x22_close+','+y22_close+' A'+r+','+r+' 0 0,0 '+x12_close+','+y12_close+'z';
+
+				d3.select('.wink1')
+						.transition()
+						.delay(500)
+						.duration(400)
+						.ease('linear')
+						.attr('d', d1_close)
+						.each('end', () => {
+							d3.select('.wink1')
+							.transition()
+							.duration(200)
+							.ease('linear')
+							.attr('d', d12_close);
+						})
+			}
+
+			close2();
+			function close2() {
+				var x1_close, y1_close, x2_close, y2_close, x12_close, y12_close, x22_close, y22_close;
+				var theta1_close =  Math.PI / 8 * 5;
+				var theta2_close = -theta1_close;
+				x1_close = r * Math.sin(theta1_close);
+				y1_close = r * Math.cos(theta1_close);
+				x2_close = r * Math.sin(theta2_close);
+				y2_close = r * Math.cos(theta2_close);
+				var d1_close = 'M'+x2_close+','+y2_close+' A'+r+','+r+' 0 0,1 '+x1_close+','+y1_close+'z';
+
+				var theta12_close =  Math.PI / 8 * 4.2;
+				var theta22_close = -theta12_close;
+				x12_close = r * Math.sin(theta12_close);
+				y12_close = r * Math.cos(theta12_close);
+				x22_close = r * Math.sin(theta22_close);
+				y22_close = r * Math.cos(theta22_close);
+				var d12_close = 'M'+x22_close+','+y22_close+' A'+r+','+r+' 0 0,1 '+x12_close+','+y12_close+'z';
+
+				d3.select('.wink2')
+						.transition()
+						.delay(500)
+						.duration(400)
+						.ease('linear')
+						.attr('d', d1_close)
+						.each('end', () => {
+							d3.select('.wink2')
+							.transition()
+							.duration(200)
+							.ease('linear')
+							.attr('d', d12_close);
+						})
+			}
+
+		});
+
 	}
 
 	showNomalEye() {
@@ -178,13 +299,13 @@ class Eyes {
 				.delay(500)
 				.duration(500)
 				.ease('cubic')
-				.attr('d', d => d12)
+				.attr('d', d12)
 				.each("end", function(){
 					d3.select('.lidline')
 						.transition()
 						.delay(500)
 						.duration(500)
-						.attr('d', d => d1)
+						.attr('d', d1)
 						.each("end", looplidflash)
 				});
 
@@ -193,7 +314,7 @@ class Eyes {
 				.delay(500)
 				.duration(500)
 				.ease('cubic')
-				.attr('d', d => d22)
+				.attr('d', d22)
 				.each("end", function(){
 					d3.select('.lidbody')
 						.transition()
