@@ -25,14 +25,17 @@ class Eyes {
 		// 	that.showNomalEye();
 		// });
 		this.index = 0;
+		this.face_status = 'showLidTired';
 		this.canvas.on('click', () => {
 			var arr = ['kya', 'showNomalEye', 'curious', 'showWink', 'showLidTired'];
 			//that.kya();
 			// that.showNomalEye();
 			//that.curious();
 			//that.showWink();
-			that[arr[that.index%5]]();
+			var face_status = arr[that.index%5];
+			that[face_status]();
 			that.index++;
+			that.face_status = face_status;
 		});
 		this.detectDeviceMotion();
 	}
