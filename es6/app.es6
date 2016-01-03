@@ -55,11 +55,10 @@ class Eyes {
 
 	}
 
-	showLidTired() {
-		var canvas = this.canvas;
+	_getDstrings(t1, t2) {
 		var x11, y11, x12, y12, x21, x22, y21, y22;
-		var t1 = -Math.PI*1.3, t2 = -Math.PI/2, r = this.width/2;
 		var g = Math.PI/100;
+		var r = this.width/2;
 
 		x11 = r * Math.sin(t1+g);
 		x12 = r * Math.sin(t1-g);
@@ -70,33 +69,36 @@ class Eyes {
 		x22 = r * Math.sin(t2+g);
 		y21 = r * Math.cos(t2-g);
 		y22 = r * Math.cos(t2+g);
-
 		var d1 = 'M'+x11+','+y11+' A'+r+','+r+' 0 0,1 '+x12+','+y12
 					+ 'L'+x22+','+y22+' A'+r+','+r+' 0 0,1 '+x21+','+y21
 					+'z';
-		canvas.append('path')
-			.attr('d', d1);
 
 		//(x21, y21) -> (x11, y11)
 		var d2 = 'M'+x21+','+y21+' A'+r+','+r+' 0 0,1 '+x11+','+y11+'z';
+		return [d1, d2];
+	}
+	showLidTired() {
+		var canvas = this.canvas;
+		var t1 = -Math.PI*1.3, t2 = -Math.PI/2;
+		var ds = this._getDstrings(t1, t2);
+		var d1 = ds[0], d2 = ds[1];
+
+		canvas.append('path')
+			.attr('d', d1);
+
 		canvas.append('path')
 			.attr('d', d2)
-			.attr('class', 'lidbody');
-		// x1 = r * Math.sin(t1);
-		// y1 = r * Math.cos(t1);
-		// x2 = r * Math.sin(t2);
-		// y2 = r * Math.cos(t2);
-		//
-		// canvas
-		// 	.append('line')
-		// 		.attr({
-		// 			x1: x1,
-		// 			y1: y1,
-		// 			x2: x2,
-		// 			y2: y2,
-		// 			class: 'lidline'
-		// 		})
-		// 		;
+			.attr('class', 'lidbody')
+				.transition()
+				.delay(500)
+				.duration(500)
+				.attr('d', d => {
+					var delta = Math.PI / 20;
+					var ds = this._getDstrings(t1-delta, t2+delta);
+					var d1 = ds[0], d2 = ds[1];
+					return d2;
+				});
+		;
 	}
 
 }
