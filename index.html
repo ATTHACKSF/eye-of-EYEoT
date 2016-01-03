@@ -4,15 +4,39 @@
   <meta charset="UTF-8">
   <style>
    body { margin:0; padding:0; }
-   #map { position:absolute; top:0; bottom:0; width:100%; }
-   path {
-     stroke-width: 2px;
-     fill: rgba(0,0,255,0);
+   .base {
+     fill: #dddddd;
+   }
+   .black {
+     fill: #000000;
+   }
+   .lidline {
+     stroke: #000000;
+     stroke-width: 7px;
+   }
+   .eyelight {
+     fill: #ffffff;
+     /*transition: .2s;*/
+     animation-duration: 2.4s;
+     animation-name: vibe;
+     animation-iteration-count: infinite;
+     animation-timing-function: ease-in-out;
+   }
+   @keyframes vibe {
+     0% {
+       cx: 98px;
+     }
+     50% {
+       cx: 106px;
+     }
+     100% {
+       cx: 98px;
+     }
    }
  </style>
 </head>
 <body>
-  <div id="map"></div>
+  <div id="canvas"></div>
   <script src="./js/bundle.js"></script>
 </body>
 </html>
