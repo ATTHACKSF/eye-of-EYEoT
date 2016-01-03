@@ -26,7 +26,7 @@ class Eyes {
 			that.showNomalEye();
 		});
 		d3.select('html').on('click', () => {
-			that.kya();
+			that.curious();
 			//that.showWink();
 		});
 		this.detectDeviceMotion();
@@ -54,6 +54,53 @@ class Eyes {
 				canvas.html('');
 				successCallback();
 			})
+	}
+
+	curious() {
+		var that = this;
+		var canvas = that.canvas;
+		this.resetEye(() => {
+			canvas.attr('opacity', 1);
+			that.showEyeBase();
+
+			// black
+			var theta1 = Math.PI / 4;
+			var theta2 = -theta1;
+			var x1, y1, x2, y2;
+			var r = 150;
+			x1 = r * Math.sin(theta1);
+			y1 = r * Math.cos(theta1);
+			x2 = r * Math.sin(theta2);
+			y2 = r * Math.cos(theta2);
+
+			var d1 = 'M'+x1+','+y1+' A'+r+','+r+' 0 1,0 '+x2+','+y2
+							 +' A150,150 0 0,1 '+x1+','+y1
+			;
+
+			canvas.append('path').attr('d', d1);
+			canvas.append('circle')
+				.attr('cx', -70)
+				.attr('cy', -70)
+				.attr('r', 50)
+				.attr('class', 'eyelight_curious')
+				.attr('fill', '#dddddd');
+			that.showBrow();
+
+			repeat();
+			function repeat(){
+				d3.select('.eyelight_curious')
+					.transition()
+					.duration(1200)
+					.ease("linear")
+					.attr("cx", -70)
+					.transition()
+					.duration(1200)
+					.ease("linear")
+					.attr("cx", -62)
+					.each("end", repeat);
+			}
+
+		});
 	}
 
 	kya() {
@@ -224,23 +271,29 @@ class Eyes {
 						cy: 0,
 						class: 'black'
 					});
-
-			// brow
-			var brow_width = 10,
-					brow_theta1 = Math.PI * 2 / 3,
-					brow_theta2 = -brow_theta1,
-					brow_r = that.r - brow_width / 2
-				;
-			var x1 = brow_r * Math.sin(brow_theta1);
-			var y1 = brow_r * Math.cos(brow_theta1);
-			var x2 = brow_r * Math.sin(brow_theta2);
-			var y2 = brow_r * Math.cos(brow_theta2);
-			var brow_d = 'M'+x1+','+y1+' A'+brow_r+','+brow_r+' 0 0,0 '+x2+','+y2;
-			console.log(brow_d);
-			canvas.append('path')
-				.attr('d', brow_d)
-				.attr('class', 'brow');
+			that.showBrow();
 		});
+
+	}
+
+	showBrow() {
+		var that = this;
+		var canvas = that.canvas;
+		// brow
+		var brow_width = 10,
+				brow_theta1 = Math.PI * 2 / 3,
+				brow_theta2 = -brow_theta1,
+				brow_r = that.r - brow_width / 2
+			;
+		var x1 = brow_r * Math.sin(brow_theta1);
+		var y1 = brow_r * Math.cos(brow_theta1);
+		var x2 = brow_r * Math.sin(brow_theta2);
+		var y2 = brow_r * Math.cos(brow_theta2);
+		var brow_d = 'M'+x1+','+y1+' A'+brow_r+','+brow_r+' 0 0,0 '+x2+','+y2;
+		console.log(brow_d);
+		canvas.append('path')
+			.attr('d', brow_d)
+			.attr('class', 'brow');
 
 	}
 
