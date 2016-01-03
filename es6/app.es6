@@ -9,12 +9,14 @@ class Eyes {
 	constructor() {
 	}
 	init() {
+		this.width = 400;
+		this.height = 400;
 		this.canvas = d3.select('#canvas')
 			.append('svg')
-				.attr('width', 400)
-				.attr('height', 400)
+				.attr('width', this.width)
+				.attr('height', this.height)
 			.append('g')
-				.attr('transform', 'translate(200, 200)');
+				.attr('transform', 'translate('+this.width/2+', '+this.height/2+')');
 
 		this.showNomalEye();
 		this.showEyeLight();
@@ -26,26 +28,30 @@ class Eyes {
 		// base
 		canvas
 			.append('circle')
-				.attr('r', 200)
+				.attr('r', this.width/2)
 				.attr('class', 'base');
 
 		// black
 		canvas
 			.append('circle')
-				.attr('r', 150)
-				.attr('cx', 0)
-				.attr('cy', 30)
-				.attr('class', 'black')
+				.attr({
+					r: 150,
+					cx: 0,
+					cy: 30,
+					class: 'black'
+				});
 	}
 
 	showEyeLight() {
 		var canvas = this.canvas;
 		canvas
 			.append('circle')
-				.attr('r', 33)
-				.attr('cx', 100)
-				.attr('cy', 50)
-				.attr('class', 'eyelight')
+				.attr({
+					r: 33,
+					cx: 100,
+					cy: 50,
+					class: 'eyelight'
+				});
 
 	}
 
@@ -53,11 +59,13 @@ class Eyes {
 		var canvas = this.canvas;
 		canvas
 			.append('line')
-				.attr('x1', -200)
-				.attr('y1', 0)
-				.attr('x2', 340)
-				.attr('y2', -70)
-				.attr('class', 'lidline')
+				.attr({
+					x1: -200,
+					y1: 0,
+					x2: 340,
+					y2: -70,
+					class: 'lidline'
+				})
 				;
 	}
 
