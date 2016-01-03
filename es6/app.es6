@@ -25,13 +25,19 @@ class Eyes {
 		this.canvas.on('click', () => {
 			that.showNomalEye();
 		});
-		d3.select('html').on('click', () => {
+		d3.select('#canvas').on('click', () => {
 			//that.kya();
 			that.showNomalEye();
 			//that.curious();
 			//that.showWink();
 		});
 		this.detectDeviceMotion();
+
+		document.getElementById('btn').addEventListener("click", function(e){
+			e.preventDefault();
+			console.log(e);
+			that.curious();
+		});
 	}
 
 
