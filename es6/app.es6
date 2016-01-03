@@ -26,7 +26,8 @@ class Eyes {
 			that.showNomalEye();
 		});
 		d3.select('html').on('click', () => {
-			that.showWink();
+			that.kya();
+			//that.showWink();
 		});
 		this.detectDeviceMotion();
 	}
@@ -53,6 +54,41 @@ class Eyes {
 				canvas.html('');
 				successCallback();
 			})
+	}
+
+	kya() {
+		var that = this;
+		var canvas = that.canvas;
+		this.resetEye(() => {
+			canvas.attr('opacity', 1);
+			that.showEyeBase();
+
+			// kya
+			canvas.append('line')
+				.attr({
+					x1: -50,
+					y1: -170,
+					x2: 170,
+					y2: 10,
+					class: 'kya'
+				});
+				canvas.append('line')
+					.attr({
+						x1: -170,
+						y1: -30,
+						x2: 170,
+						y2: 10,
+						class: 'kya'
+					});
+					canvas.append('line')
+						.attr({
+							x1: -60,
+							y1: 150,
+							x2: 170,
+							y2: 10,
+							class: 'kya'
+						});
+		});
 	}
 
 	showWink() {
