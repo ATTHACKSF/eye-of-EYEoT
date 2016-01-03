@@ -25,6 +25,7 @@ class Eyes {
 		this.canvas.on('click', () => {
 			that.showNomalEye();
 		});
+		this.detectDeviceMotion();
 	}
 
 
@@ -207,6 +208,21 @@ class Eyes {
 
 		;
 		}
+	}
+	detectDeviceMotion() {
+		window.addEventListener('devicemotion', function(e) {
+			if(!e || !e.accelerationIncludingGravity || !e.accelerationIncludingGravity.x || !e.accelerationIncludingGravity.y || !e.accelerationIncludingGravity.z){
+				return;
+			}
+			var ax = e.accelerationIncludingGravity.x;
+			var ay = e.accelerationIncludingGravity.y;
+			var az = e.accelerationIncludingGravity.z;
+			if (ax > 50 || ay > 50 || az > 50){
+				console.log("ax: " + ax);
+				console.log("ay: " + ay);
+				console.log("az: " + az);
+			}
+		});
 	}
 
 }
