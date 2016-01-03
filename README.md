@@ -1,3 +1,3 @@
 # eye-ofEYEoT
 animate eyes
-![map](https://github.com/eye-ofEYEoT//blob/master/sample.png?raw=true)
+![image](https://github.com/ATTHACKSF/eye-of-EYEoT/blob/master/sample.png?raw=true)
