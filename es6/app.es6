@@ -69,36 +69,50 @@ class Eyes {
 		}
 	}
 
-	_getDstrings(t1, t2) {
+	_getDstrings(t1, t2, pattern) {
 		var x11, y11, x12, y12, x21, x22, y21, y22;
 		var g = Math.PI/100;
 		var r = this.width/2;
 
+		if(!pattern) pattern = '0,1';
+
 		x11 = r * Math.sin(t1+g);
-		x12 = r * Math.sin(t1-g);
 		y11 = r * Math.cos(t1+g);
+		x12 = r * Math.sin(t1-g);
 		y12 = r * Math.cos(t1-g);
 
 		x21 = r * Math.sin(t2-g);
-		x22 = r * Math.sin(t2+g);
 		y21 = r * Math.cos(t2-g);
+		x22 = r * Math.sin(t2+g);
 		y22 = r * Math.cos(t2+g);
-		var d1 = 'M'+x11+','+y11+' A'+r+','+r+' 0 0,1 '+x12+','+y12
-					+ 'L'+x22+','+y22+' A'+r+','+r+' 0 0,1 '+x21+','+y21
+		var d1 = 'M'+x11+','+y11+' A'+r+','+r+' 0 '+pattern+' '+x12+','+y12
+					+ 'L'+x22+','+y22+' A'+r+','+r+' 0 '+pattern+' '+x21+','+y21
 					+'z';
 
 		//(x21, y21) -> (x11, y11)
-		var d2 = 'M'+x21+','+y21+' A'+r+','+r+' 0 0,1 '+x11+','+y11+'z';
-		return [d1, d2];
+		var d2 = 'M'+x21+','+y21+' A'+r+','+r+' 0 '+pattern+' '+x11+','+y11+'z';
+
+		var delta1 = (Math.PI + t1 - t2)/2 + g;
+
+		return [d1, d2, delta1];
 	}
 	showLidTired() {
 		var canvas = this.canvas;
 		var t1 = -Math.PI*1.3, t2 = -Math.PI/2;
 		var ds = this._getDstrings(t1, t2);
-		var d1 = ds[0], d2 = ds[1];
+		var d1 = ds[0], d2 = ds[1], delta1 = ds[2];
 
 		canvas.append('path')
-			.attr('d', d1);
+			.attr('d', d1)
+				.transition()
+				.delay(500)
+				.duration(500)
+				.attr('d', d => {
+					var ds = this._getDstrings(t1-delta1, t2+delta1);
+					var d1 = ds[0], d2 = ds[1];
+					return d1;
+				})
+			;
 
 		canvas.append('path')
 			.attr('d', d2)
@@ -107,11 +121,10 @@ class Eyes {
 				.delay(500)
 				.duration(500)
 				.attr('d', d => {
-					var delta = Math.PI / 20;
-					var ds = this._getDstrings(t1-delta, t2+delta);
+					var ds = this._getDstrings(t1-delta1, t2+delta1);
 					var d1 = ds[0], d2 = ds[1];
 					return d2;
-				});
+				})
 		;
 	}
 
