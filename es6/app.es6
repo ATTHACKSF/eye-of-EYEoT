@@ -82,10 +82,7 @@ class Eyes {
 			console.log(brow_d);
 			canvas.append('path')
 				.attr('d', brow_d)
-				.attr('class', 'brow')
-
-
-
+				.attr('class', 'brow');
 		});
 
 	}
