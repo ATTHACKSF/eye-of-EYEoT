@@ -9,8 +9,8 @@ class Eyes {
 	constructor() {
 	}
 	init() {
-		this.width = 400;
-		this.height = 400;
+		this.width = 360;
+		this.height = 360;
 		this.r = this.width / 2;
 		this.canvas = d3.select('#canvas')
 			.append('svg')
@@ -61,7 +61,7 @@ class Eyes {
 			// black
 			canvas.append('circle')
 					.attr({
-						r: 170,
+						r: 150,
 						cx: 0,
 						cy: 0,
 						class: 'black'
@@ -91,14 +91,14 @@ class Eyes {
 
 	showEyeLight() {
 		var canvas = this.canvas;
-		var cx_right = 98;
-		var cx_left = 106;
+		var cx_right = 92;
+		var cx_left = 100;
 		canvas
 			.append('circle')
 				.attr({
 					r: 33,
 					cx: 100,
-					cy: 50,
+					cy: 20,
 					class: 'eyelight'
 				});
 		repeat();
@@ -153,9 +153,9 @@ class Eyes {
 		// black
 		canvas.append('circle')
 				.attr({
-					r: 150,
+					r: 135,
 					cx: 0,
-					cy: 30,
+					cy: 10,
 					class: 'black'
 				});
 		this.showEyeLight();
