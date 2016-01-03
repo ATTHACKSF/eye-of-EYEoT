@@ -436,3 +436,124 @@ class Eyes {
 
 var c = new Eyes();
 c.init();
+
+var Child = function () { };
+Child.prototype = new Eyes();
+
+Child.prototype.init = function(){
+    this.width = 360;
+    this.height = 360;
+    this.r = this.width / 2;
+    this.canvas = d3.select('#canvas2')
+    .append('svg')
+    .attr('width', this.width)
+    .attr('height', this.height)
+    .append('g')
+    .attr('transform', 'translate('+this.width/2+', '+this.height/2+')');
+
+    this.showEyeBase();
+    this.showLidTired();
+    var that = this;
+    this.canvas.on('click', () => {
+        that.showNomalEye();
+    });
+    d3.select('html').on('click', () => {
+        that.kya();
+        //that.showWink();
+    });
+    this.detectDeviceMotion();
+}
+
+Child.prototype.showEyeLight = function() {
+    var canvas = this.canvas;
+    var cx_right = -92;
+    var cx_left = -100;
+    canvas
+    .append('circle')
+    .attr({
+        r: 33,
+        cx: -100,
+        cy: 20,
+        class: 'eyelight2'
+    });
+    repeat();
+    function repeat(){
+        d3.select('.eyelight2')
+        .transition()
+        .duration(1200)
+        .ease("linear")
+        .attr("cx", cx_left)
+        .transition()
+        .duration(1200)
+        .ease("linear")
+        .attr("cx", cx_right)
+        .each("end", repeat);
+    }
+};
+
+Child.prototype.showLidTired = function() {
+    var that = this;
+    var canvas = this.canvas;
+
+    // black
+    canvas.append('circle')
+    .attr({
+        r: 135,
+        cx: 0,
+        cy: 10,
+        class: 'black'
+    });
+    this.showEyeLight();
+
+    var t1 = Math.PI/2, t2 = Math.PI*1.3;
+    var ds = this._getDstrings(t1, t2);
+    var d1 = ds[0], d2 = ds[1], delta1 = ds[2], delta2 = ds[3];
+    var ds2 = this._getDstrings(t1-delta1, t2+delta1);
+    
+    var d12 = ds2[0], d22 = ds2[1];
+    canvas.append('path')
+    .attr('d', d1)
+    .attr('class', 'lidline2');
+
+    canvas.append('path')
+    .attr('d', d2)
+    .attr('class', 'lidbody2');
+    looplidflash();
+    function looplidflash() {
+        d3.select('.lidline2')
+        .transition()
+        .delay(500)
+        .duration(500)
+        .ease('cubic')
+        .attr('d', d12)
+        .each("end", function(){
+            d3.select('.lidline2')
+            .transition()
+            .delay(500)
+            .duration(500)
+            .attr('d', d1)
+            .each("end", looplidflash)
+        });
+
+        d3.select('.lidbody2')
+        .transition()
+        .delay(500)
+        .duration(500)
+        .ease('cubic')
+        .attr('d', d22)
+        .each("end", function(){
+            d3.select('.lidbody2')
+            .transition()
+            .delay(500)
+            .duration(500)
+            .attr('d', d => d2)
+            .each("end", looplidflash)
+        });
+    }
+
+};
+
+
+var child = new Child();
+child.init();
+
