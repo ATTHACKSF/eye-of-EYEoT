@@ -1,0 +1,19 @@
+{
+  "name": "charts-lib-es6",
+  "version": "0.0.1",
+  "devDependencies": {
+    "babel-eslint": "^3.1.18",
+    "babelify": "^6.1.1",
+    "browserify": "^10.2.1",
+    "d3": "^3.5.9",
+    "eslint": "^0.23.0",
+    "glob": "^5.0.14",
+    "gulp": "^3.9.0",
+    "gulp-webserver": "^0.9.1",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "scripts": {
+    "build": "browserify --debug --transform babelify es6/*.es6 --outfile js/bundle.js"
+  },
+  "license": "MIT"
+}
