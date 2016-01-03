@@ -26,7 +26,9 @@ class Eyes {
 			that.showNomalEye();
 		});
 		d3.select('html').on('click', () => {
-			that.curious();
+			//that.kya();
+			that.showNomalEye();
+			//that.curious();
 			//that.showWink();
 		});
 		this.detectDeviceMotion();
