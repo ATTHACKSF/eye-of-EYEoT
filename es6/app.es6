@@ -19,17 +19,24 @@ class Eyes {
 			.append('g')
 				.attr('transform', 'translate('+this.width/2+', '+this.height/2+')');
 
-		this.showEyeBase();
 		this.showLidTired();
 		var that = this;
-		this.canvas.on('click', () => {
-			that.showNomalEye();
-		});
+		// this.canvas.on('click', () => {
+		// 	that.showNomalEye();
+		// });
+		this.index = 0;
+		this.face_status = 'showLidTired';
 		d3.select('#canvas').on('click', () => {
-			//that.kya();
 			that.showNomalEye();
+			var arr = ['kya', 'showNomalEye', 'curious', 'showWink', 'showLidTired'];
+			//that.kya();
+			// that.showNomalEye();
 			//that.curious();
 			//that.showWink();
+			var face_status = arr[that.index%5];
+			that[face_status]();
+			that.index++;
+			that.face_status = face_status;
 		});
 		this.detectDeviceMotion();
 
@@ -364,65 +371,69 @@ class Eyes {
 	}
 	showLidTired() {
 		var that = this;
-		var canvas = this.canvas;
+		var canvas = that.canvas;
+		this.resetEye(() => {
+			canvas.attr('opacity', 1);
+			that.showEyeBase();
 
-		// black
-		canvas.append('circle')
-				.attr({
-					r: 135,
-					cx: 0,
-					cy: 10,
-					class: 'black'
-				});
-		this.showEyeLight();
+			// black
+			canvas.append('circle')
+					.attr({
+						r: 135,
+						cx: 0,
+						cy: 10,
+						class: 'black'
+					});
+			that.showEyeLight();
 
-		var t1 = -Math.PI*1.3, t2 = -Math.PI/2;
-		var ds = this._getDstrings(t1, t2);
-		var d1 = ds[0], d2 = ds[1], delta1 = ds[2], delta2 = ds[3];
-		var ds2 = this._getDstrings(t1-delta1, t2+delta1);
-		var d12 = ds2[0], d22 = ds2[1];
-		canvas.append('path')
-			.attr('d', d1)
-			.attr('class', 'lidline')
-			;
-
+			var t1 = -Math.PI*1.3, t2 = -Math.PI/2;
+			var ds = that._getDstrings(t1, t2);
+			var d1 = ds[0], d2 = ds[1], delta1 = ds[2], delta2 = ds[3];
+			var ds2 = that._getDstrings(t1-delta1, t2+delta1);
+			var d12 = ds2[0], d22 = ds2[1];
 			canvas.append('path')
-				.attr('d', d2)
-				.attr('class', 'lidbody');
-		looplidflash();
-		function looplidflash() {
-			d3.select('.lidline')
-				.transition()
-				.delay(500)
-				.duration(500)
-				.ease('cubic')
-				.attr('d', d12)
-				.each("end", function(){
-					d3.select('.lidline')
-						.transition()
-						.delay(500)
-						.duration(500)
-						.attr('d', d1)
-						.each("end", looplidflash)
-				});
+				.attr('d', d1)
+				.attr('class', 'lidline')
+				;
 
-			d3.select('.lidbody')
-				.transition()
-				.delay(500)
-				.duration(500)
-				.ease('cubic')
-				.attr('d', d22)
-				.each("end", function(){
-					d3.select('.lidbody')
-						.transition()
-						.delay(500)
-						.duration(500)
-						.attr('d', d => d2)
-						.each("end", looplidflash)
-				});
+				canvas.append('path')
+					.attr('d', d2)
+					.attr('class', 'lidbody');
+			looplidflash();
+			function looplidflash() {
+				d3.select('.lidline')
+					.transition()
+					.delay(500)
+					.duration(500)
+					.ease('cubic')
+					.attr('d', d12)
+					.each("end", function(){
+						d3.select('.lidline')
+							.transition()
+							.delay(500)
+							.duration(500)
+							.attr('d', d1)
+							.each("end", looplidflash)
+					});
 
-		;
-		}
+				d3.select('.lidbody')
+					.transition()
+					.delay(500)
+					.duration(500)
+					.ease('cubic')
+					.attr('d', d22)
+					.each("end", function(){
+						d3.select('.lidbody')
+							.transition()
+							.delay(500)
+							.duration(500)
+							.attr('d', d => d2)
+							.each("end", looplidflash)
+					});
+
+			;
+			}
+		});
 	}
 	detectDeviceMotion() {
 		window.addEventListener('devicemotion', function(e) {
