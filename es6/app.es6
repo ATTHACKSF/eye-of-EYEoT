@@ -85,47 +85,70 @@ class Eyes {
 		y21 = r * Math.cos(t2-g);
 		x22 = r * Math.sin(t2+g);
 		y22 = r * Math.cos(t2+g);
-		var d1 = 'M'+x11+','+y11+' A'+r+','+r+' 0 '+pattern+' '+x12+','+y12
+		var d1t = 'M'+x11+','+y11+' A'+r+','+r+' 0 '+pattern+' '+x12+','+y12
 					+ 'L'+x22+','+y22+' A'+r+','+r+' 0 '+pattern+' '+x21+','+y21
 					+'z';
 
 		//(x21, y21) -> (x11, y11)
-		var d2 = 'M'+x21+','+y21+' A'+r+','+r+' 0 '+pattern+' '+x11+','+y11+'z';
+		var d2t = 'M'+x21+','+y21+' A'+r+','+r+' 0 '+pattern+' '+x11+','+y11+'z';
 
 		var delta1 = (Math.PI + t1 - t2)/2 + g;
 
-		return [d1, d2, delta1];
+		var rest = Math.PI / 4; // >= g
+		var delta2 = (-rest + t2 - t1)/2 + g;
+
+		return [d1t, d2t, delta1, delta2];
 	}
 	showLidTired() {
+		var that = this;
 		var canvas = this.canvas;
 		var t1 = -Math.PI*1.3, t2 = -Math.PI/2;
 		var ds = this._getDstrings(t1, t2);
-		var d1 = ds[0], d2 = ds[1], delta1 = ds[2];
-
+		var d1 = ds[0], d2 = ds[1], delta1 = ds[2], delta2 = ds[3];
+		var ds2 = this._getDstrings(t1-delta1, t2+delta1);
+		var d12 = ds2[0], d22 = ds2[1];
 		canvas.append('path')
 			.attr('d', d1)
-				.transition()
-				.delay(500)
-				.duration(500)
-				.attr('d', d => {
-					var ds = this._getDstrings(t1-delta1, t2+delta1);
-					var d1 = ds[0], d2 = ds[1];
-					return d1;
-				})
+			.attr('class', 'lidline')
 			;
 
-		canvas.append('path')
-			.attr('d', d2)
-			.attr('class', 'lidbody')
+			canvas.append('path')
+				.attr('d', d2)
+				.attr('class', 'lidbody');
+		looplidflash();
+		function looplidflash() {
+			d3.select('.lidline')
 				.transition()
 				.delay(500)
 				.duration(500)
-				.attr('d', d => {
-					var ds = this._getDstrings(t1-delta1, t2+delta1);
-					var d1 = ds[0], d2 = ds[1];
-					return d2;
-				})
+				.ease('cubic')
+				.attr('d', d => d12)
+				.each("end", function(){
+					d3.select('.lidline')
+						.transition()
+						.delay(500)
+						.duration(500)
+						.attr('d', d => d1)
+						.each("end", looplidflash)
+				});
+
+			d3.select('.lidbody')
+				.transition()
+				.delay(500)
+				.duration(500)
+				.ease('cubic')
+				.attr('d', d => d22)
+				.each("end", function(){
+					d3.select('.lidbody')
+						.transition()
+						.delay(500)
+						.duration(500)
+						.attr('d', d => d2)
+						.each("end", looplidflash)
+				});
+
 		;
+		}
 	}
 
 }
