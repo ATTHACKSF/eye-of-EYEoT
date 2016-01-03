@@ -11,6 +11,7 @@ class Eyes {
 	init() {
 		this.width = 400;
 		this.height = 400;
+		this.r = this.width / 2;
 		this.canvas = d3.select('#canvas')
 			.append('svg')
 				.attr('width', this.width)
@@ -20,6 +21,10 @@ class Eyes {
 
 		this.showEyeBase();
 		this.showLidTired();
+		var that = this;
+		this.canvas.on('click', () => {
+			that.showNomalEye();
+		});
 	}
 
 
@@ -33,8 +38,54 @@ class Eyes {
 
 	}
 
-	showNomalEye() {
+	resetEye(successCallback) {
 		var canvas = this.canvas;
+		canvas
+			.attr('opacity', 1)
+			.transition()
+			.duration(500)
+			.attr('opacity', 0)
+			.each('end', () => {
+				canvas.html('');
+				successCallback();
+			})
+	}
+
+	showNomalEye() {
+		var that = this;
+		var canvas = that.canvas;
+		this.resetEye(() => {
+			canvas.attr('opacity', 1);
+			that.showEyeBase();
+
+			// black
+			canvas.append('circle')
+					.attr({
+						r: 170,
+						cx: 0,
+						cy: 0,
+						class: 'black'
+					});
+
+			// brow
+			var brow_width = 10,
+					brow_theta1 = Math.PI * 2 / 3,
+					brow_theta2 = -brow_theta1,
+					brow_r = that.r - brow_width / 2
+				;
+			var x1 = brow_r * Math.sin(brow_theta1);
+			var y1 = brow_r * Math.cos(brow_theta1);
+			var x2 = brow_r * Math.sin(brow_theta2);
+			var y2 = brow_r * Math.cos(brow_theta2);
+			var brow_d = 'M'+x1+','+y1+' A'+brow_r+','+brow_r+' 0 0,0 '+x2+','+y2;
+			console.log(brow_d);
+			canvas.append('path')
+				.attr('d', brow_d)
+				.attr('class', 'brow')
+
+
+
+		});
 
 	}
 
