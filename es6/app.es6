@@ -44,6 +44,8 @@ class Eyes {
 
 	showEyeLight() {
 		var canvas = this.canvas;
+		var cx_right = 98;
+		var cx_left = 106;
 		canvas
 			.append('circle')
 				.attr({
@@ -52,7 +54,19 @@ class Eyes {
 					cy: 50,
 					class: 'eyelight'
 				});
-
+		repeat();
+		function repeat(){
+			d3.select('.eyelight')
+				.transition()
+				.duration(1200)
+				.ease("linear")
+				.attr("cx", cx_left)
+				.transition()
+				.duration(1200)
+				.ease("linear")
+				.attr("cx", cx_right)
+				.each("end", repeat);
+		}
 	}
 
 	showLidTired() {
