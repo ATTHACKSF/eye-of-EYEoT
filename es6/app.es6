@@ -399,6 +399,7 @@ class Eyes {
 				canvas.append('path')
 					.attr('d', d2)
 					.attr('class', 'lidbody');
+
 			looplidflash();
 			function looplidflash() {
 				d3.select('.lidline')
@@ -476,10 +477,18 @@ Child.prototype.init = function(){
     this.canvas.on('click', () => {
         that.showNomalEye();
     });
-    d3.select('html').on('click', () => {
-        that.kya();
-        //that.showWink();
-    });
+	this.index = 0;
+	this.face_status = 'showLidTired';
+
+	d3.select('#canvas2').on('click', () => {
+		that.showNomalEye();
+		var arr = ['kya', 'showNomalEye', 'curious', 'showWink', 'showLidTired'];
+		var face_status = arr[that.index%5];
+		that[face_status]();
+		that.index++;
+		that.face_status = face_status;
+	});
+
     this.detectDeviceMotion();
 }
 
@@ -569,7 +578,41 @@ Child.prototype.showLidTired = function() {
             .each("end", looplidflash)
         });
     }
+};
 
+Child.prototype.kya = function() {
+	var that = this;
+	var canvas = that.canvas;
+	this.resetEye(() => {
+		canvas.attr('opacity', 1);
+		that.showEyeBase();
+
+		// kya
+		canvas.append('line')
+			.attr({
+				x1: 50,
+				y1: -170,
+				x2: -170,
+				y2: 10,
+				class: 'kya2'
+			});
+		canvas.append('line')
+			.attr({
+				x1: 170,
+				y1: -30,
+				x2: -170,
+				y2: 10,
+				class: 'kya2'
+			});
+		canvas.append('line')
+			.attr({
+				x1: 60,
+				y1: 150,
+				x2: -170,
+				y2: 10,
+				class: 'kya2'
+			});
+	});	
 };
 
 

@@ -7,17 +7,17 @@
    .base {
      fill: #dddddd;
    }
-   .black {
+   .black, .black2 {
      fill: #000000;
    }
-   .lidline {
+   .lidline, .lidline2 {
      stroke: #000000;
      stroke-width: 1px;
    }
-   .lidbody {
+   .lidbody, .lidbody2 {
      fill: #dddddd;
    }
-   .eyelight {
+   .eyelight, .eyelight2 {
      fill: #ffffff;
    }
    .brow {
@@ -26,14 +26,19 @@
      stroke-linecap: round;
      fill: transparent;
    }
-   .kya {
+   .kya, .kya2 {
      stroke: black;
      stroke-width: 6px;
+   }
+   .result{
+      color: white;
    }
  </style>
 </head>
 <body>
   <div id="canvas"></div>
+    <button id="btn">Voice</button>
+    <span class="result"></span>  
   <script src="./js/bundle.js"></script>
 </body>
 </html>
