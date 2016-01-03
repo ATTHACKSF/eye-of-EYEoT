@@ -109,34 +109,34 @@ class Eyes {
 		var that = this;
 		var canvas = that.canvas;
 		this.resetEye(() => {
-			canvas.attr('opacity', 1);
-			that.showEyeBase();
+		canvas.attr('opacity', 1);
+		that.showEyeBase();
 
-			// kya
-			canvas.append('line')
-				.attr({
-					x1: -50,
-					y1: -170,
-					x2: 170,
-					y2: 10,
-					class: 'kya'
-				});
-				canvas.append('line')
-					.attr({
-						x1: -170,
-						y1: -30,
-						x2: 170,
-						y2: 10,
-						class: 'kya'
-					});
-					canvas.append('line')
-						.attr({
-							x1: -60,
-							y1: 150,
-							x2: 170,
-							y2: 10,
-							class: 'kya'
-						});
+		// kya
+		canvas.append('line')
+			.attr({
+				x1: -50,
+				y1: -170,
+				x2: 170,
+				y2: 10,
+				class: 'kya'
+			});
+		canvas.append('line')
+			.attr({
+				x1: -170,
+				y1: -30,
+				x2: 170,
+				y2: 10,
+				class: 'kya'
+			});
+		canvas.append('line')
+			.attr({
+				x1: -60,
+				y1: 150,
+				x2: 170,
+				y2: 10,
+				class: 'kya'
+			});
 		});
 	}
 
@@ -511,7 +511,7 @@ Child.prototype.showLidTired = function() {
     var ds = this._getDstrings(t1, t2);
     var d1 = ds[0], d2 = ds[1], delta1 = ds[2], delta2 = ds[3];
     var ds2 = this._getDstrings(t1-delta1, t2+delta1);
-    
+
     var d12 = ds2[0], d22 = ds2[1];
     canvas.append('path')
     .attr('d', d1)
@@ -558,4 +558,3 @@ Child.prototype.showLidTired = function() {
 
 var child = new Child();
 child.init();
-
