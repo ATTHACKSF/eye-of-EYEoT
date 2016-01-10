@@ -43,7 +43,9 @@ class Eyes {
 		document.getElementById('btn').addEventListener("click", function(e){
 			e.preventDefault();
 			console.log(e);
-			that.curious();
+			startRecording (function(data){
+				that.curious();
+			});
 		});
 	}
 
@@ -474,9 +476,6 @@ Child.prototype.init = function(){
     this.showEyeBase();
     this.showLidTired();
     var that = this;
-    this.canvas.on('click', () => {
-        that.showNomalEye();
-    });
 	this.index = 0;
 	this.face_status = 'showLidTired';
 
@@ -488,6 +487,15 @@ Child.prototype.init = function(){
 		that.index++;
 		that.face_status = face_status;
 	});
+
+	document.getElementById('btn').addEventListener("click", function(e){
+		e.preventDefault();
+		console.log(e);
+		startRecording (function(data){
+			that.curious();
+		});
+	});
+
 
     this.detectDeviceMotion();
 }
@@ -546,6 +554,7 @@ Child.prototype.showLidTired = function() {
     canvas.append('path')
     .attr('d', d2)
     .attr('class', 'lidbody2');
+
     looplidflash();
     function looplidflash() {
         d3.select('.lidline2')
